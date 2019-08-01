@@ -1,5 +1,9 @@
 console.log("Keys loaded");
 
+//The keys.js file should only have a reference to that variable for your key
+
+
+
 //commands:
 
 //spotify this song "A song"
@@ -13,4 +17,9 @@ console.log("Keys loaded");
 
 //mark down language for readmes
 
-//
+console.log('this is loaded');
+
+exports.spotify = {
+  id: process.env.SPOTIFY_ID,
+  secret: process.env.SPOTIFY_SECRET
+};
