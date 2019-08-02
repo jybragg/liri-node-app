@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/jybragg/liri-node-app#readme",
   "dependencies": {
-    "axios": "^0.19.0"
+    "axios": "^0.19.0",
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0"
   }
 }
