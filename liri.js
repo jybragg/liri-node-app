@@ -7,18 +7,26 @@ var keys = require("./keys.js");
 
 var axios = require("axios");
 
-var search = process.argv[2] 
+var search = process.argv[2]
 
 var term = process.argv.slice(3).join(" ");
 
 
 if (search === "concert-this") {
-  console.log("Searching for Concerts");
-  axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
-  .then(function (response) {
-      console.log(response)
-  })
-} 
+    console.log("Searching for Concerts");
+    axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
+        .then(function (response) {
+           // console.log(response)
+            // parse the response body (string) to a JSON object
+            var jsonData = response.data;
+            var showData = [
+                "Name of the venue: " + jsonData.name,
+                "Venue location: " + jsonData.location,
+                "Date of the Event: " + jsonData.date,
+            ].join("\n\n");
+            console.log(showData);
+        })
+}
 
 
 //for an artist and render the following information about each event to the terminal:
