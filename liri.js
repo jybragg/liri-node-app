@@ -1,43 +1,32 @@
-//Grab the axios package...
-var axios = require("axios");
-
-// Run the axios.get function...
-// The axios.get function takes in a URL and returns a promise (just like $.ajax)
-// axios
-//   .get("https://en.wikipedia.org/wiki/Kudos_(granola_bar)")
-//   .then(function(response) {
-//     // If the axios was successful...
-//     // Then log the body from the site!
-//     console.log(response.data);
-//   })
-
-//--------------------------------------------------------------------------------------------------------//
-//Client ID d339383af2f1471cb089cda0c0687e1e
-//Client Secret 622e8bc653cb455bb9eaf258901ba09d
-//--------------------------------------------------------------------------------------------------------//
-//add code to read and set any environment variables with the dotenv package:
-
 
 require("dotenv").config();
 
-
-//Add the code required to import the `keys.js` file and store it in a variable.
-
 var keys = require("./keys.js");
 
-//You should then be able to access your keys information like so:
+//var spotify = new Spotify(keys.spotify);
 
-var spotify = new Spotify(keys.spotify);
+var axios = require("axios");
 
-//Make it so liri.js can take in one of the following commands:
+var search = process.argv[2] 
 
-//concert-this ==node liri.js concert-this <artist/band name here>
-//This will search the Bands in Town Artist Events API 
-//(`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) 
+var term = process.argv.slice(3).join(" ");
+
+
+if (search === "concert-this") {
+  console.log("Searching for Concerts");
+  axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
+  .then(function (response) {
+      console.log(response)
+  })
+} 
+
+
 //for an artist and render the following information about each event to the terminal:
 //Name of the venue
 //Venue location
 //Date of the Event (use moment to format this as "MM/DD/YYYY")
+
+
 
 
 //spotify-this-song:node liri.js spotify-this-song '<song name here>
@@ -62,16 +51,16 @@ var spotify = new Spotify(keys.spotify);
 
 //movie-this:node liri.js movie-this '<movie name here>
 //This will output the following information to your terminal/bash window
-```
-* Title of the movie.
-* Year the movie came out.
-* IMDB Rating of the movie.
-* Rotten Tomatoes Rating of the movie.
-* Country where the movie was produced.
-* Language of the movie.
-* Plot of the movie.
-* Actors in the movie.
-```
+
+// * Title of the movie.
+// * Year the movie came out.
+// * IMDB Rating of the movie.
+// * Rotten Tomatoes Rating of the movie.
+// * Country where the movie was produced.
+// * Language of the movie.
+// * Plot of the movie.
+// * Actors in the movie.
+// ```
 // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 //If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>
 //It's on Netflix!
