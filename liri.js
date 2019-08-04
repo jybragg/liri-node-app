@@ -77,14 +77,26 @@ else if (search === "movie-this") {
     console.log("Searching for Movies...");
     // if (err) {
     //     return console.log('Error occurred: ' + err);
+    // } else {
+        axios.get("http://www.omdbapi.com/?t=" + term + "&apikey=6a0f9933")
+            .then(function (response) {
+                //console.log(response); -- for testing
+                //no for loop needed here
+                    var movieData = [
+                        "Title: " + response.data.Title,
+                        "Release Year: " + response.data.Year,
+                        "IMDB Rating: " + response.data.imdbRating,
+                        "Produced in: " + response.data.Country,
+                        "Language: " + response.data.Language,
+                        "Plot: " + response.data.Plot,
+                        "Cast: " + response.data.Actors,
+                        "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value,
+                    ].join("\n\n");
+                    console.log(movieData);
+            });
+    }
+//}
 
-    axios.get("http://www.omdbapi.com/?i=tt3896198&apikey=6a0f9933").then(function (response) {
-        console.log(response);
-
-    // }) else {
-
-    });
-}
 //node liri.js movie-this '<movie name here>
 //This will output the following information to your terminal/bash window
 
