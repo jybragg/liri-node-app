@@ -9,7 +9,8 @@ var fs = require("fs");
 const moment = require("moment");
 
 // omdbapi wrapper, npm install omdbapi
-// var omdb = require("omdbapi");
+var omdb = require("omdb");
+
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
@@ -41,98 +42,50 @@ if (search === "concert-this") {
 
             }
         });
-} 
+}
 
 //---------------------------------------------------------------------------------------------------------------//
 // spotify-this-song function
 else if (search === "spotify-this-song") {
     console.log("Searching for Songs...");
 
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+    spotify.search({ type: 'track', query: term, limit: 3, }, function (err, data) {
         if (err) {
-          return console.log('Error occurred: ' + err);
-        }else {
-                        var results = data.tracks.items
-                        for (i = 0; i < results.length; i++) {
-                            var songData = [
-                                "Artist: " + results[i].artists[0].name,
-                                "Song name: " + results[i].name,
-                                "Album: " + results[i].album.name,
-                                "Link to Spotify: " + results[i].external_urls.spotify,
-        
-                            ].join("\n\n");
-                            console.log(songData);
-        
-                        };
-       
-      //console.log(data); -- for testing
-      };
+            return console.log('Error: ' + err);
+        } else {
+            var results = data.tracks.items
+            for (i = 0; i < results.length; i++) {
+                var songData = [
+                    "Artist: " + results[i].artists[0].name,
+                    "Song name: " + results[i].name,
+                    "Album: " + results[i].album.name,
+                    "Link to Spotify: " + results[i].external_urls.spotify,
+
+                ].join("\n\n");
+                console.log(songData);
+
+            };
+            //console.log(data); -- for testing
+        };
     });
-};
-    // spotify.search({
-    //     type: 'track',
-    //     query: search,
-    // },
-    //     function (err, data) {
-    //         if (err) {
-    //             return console.log("Error: " + err);
-
-    //         } else {
-    //             var results = data.tracks.items
-    //             for (i = 0; i < results.length; i++) {
-    //                 var songData = [
-    //                     "Artist: " + results[i].artists[0].name,
-    //                     "Song name: " + results[i].name,
-    //                     "Album: " + results[i].album.name,
-    //                     "Link to Spotify: " + results[i].external_urls.spotify,
-
-    //                 ].join("\n\n");
-    //                 console.log(songData);
-
-    //             };
-    //         };
-    //     });
-   // };
-//};
-//song();
-
-//////////
-// else if (apiType == "spotify-this-song") {
-//     spotifyAPI.search({ type: "track", 
-//query: searchTerm, 
-//limit: 20 }, 
-//          function (err, data) {
-//         if (err) {
-//             return console.log('Error occurred: ' + err);
-//         }
-//         var resultArray = data.tracks.items;
-
-//         for (var i = 0; i < resultArray.length; i++) {
-//             var band = resultArray[i].album.artists[0].name;
-//             var song = resultArray[i].name;
-//             var album = resultArray[i].album.name;
-//             var songLink = resultArray[i].external_urls.spotify;
-
-//             var spotifyData = "Song Name: " + song + "\nBand: " + band + "\nAlbum: " + album + "\nSpotify Link: " + songLink;
-
-//                 console.log(spotifyData + "\n");
-//               });
-//         }
-//     });
-// } 
-/////////////////////////
-
-//spotify-this-song:node liri.js spotify-this-song '<song name here>
-//This will show the following information about the song in your terminal/bash window:
-
-//If no song is provided then your program will default to "The Sign" by Ace of Base.
-//You will utilize the [node-spotify-api](https://www.npmjs.com/package/node-spotify-api) package 
-//in order to retrieve song information from the Spotify API.
-
+}
 
 //---------------------------------------------------------------------------------------------------------------//
 
-//movie-this:node liri.js movie-this '<movie name here>
+//movie-this function
+else if (search === "movie-this") {
+    console.log("Searching for Movies...");
+    // if (err) {
+    //     return console.log('Error occurred: ' + err);
+
+    axios.get("http://www.omdbapi.com/?i=tt3896198&apikey=6a0f9933").then(function (response) {
+        console.log(response);
+
+    // }) else {
+
+    });
+}
+//node liri.js movie-this '<movie name here>
 //This will output the following information to your terminal/bash window
 
 // * Title of the movie.
