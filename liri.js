@@ -10,8 +10,8 @@ const moment = require("moment");
 
 // omdbapi wrapper, npm install omdbapi
 // var omdb = require("omdbapi");
-
-//var spotify = new Spotify(keys.spotify);
+var Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
 
 var axios = require("axios");
 
@@ -24,72 +24,94 @@ if (search === "concert-this") {
     console.log("Searching for Concerts");
     axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
         .then(function (response) {
-           // console.log(response) - for testing
+            // console.log(response) - for testing
             //looping through response.data
-           for (var i = 0; i < response.data.length; i++) {
+            for (var i = 0; i < response.data.length; i++) {
 
-            // var date = response.data[i].datetime;
-            // var eventDate = moment(date, "MM-DD-YYYY"),
+                // var date = response.data[i].datetime;
+                // var eventDate = moment(date, "MM-DD-YYYY"),
 
-            var showData = [
-                "Artist: " + response.data[i].lineup[i],
-                "Name of the venue: " + response.data[i].venue.name,
-                "Venue location: " + response.data[i].venue.city,
-                "Date of the Event: " + response.data[i].datetime,
+                var showData = [
+                    "Artist: " + response.data[i].lineup[i],
+                    "Name of the venue: " + response.data[i].venue.name,
+                    "Venue location: " + response.data[i].venue.city,
+                    "Date of the Event: " + response.data[i].datetime,
 
-            ].join("\n\n");
-            console.log(showData);
+                ].join("\n\n");
+                console.log(showData);
 
-           }
+            }
         });
-    } else {
-        console.log("error");
+} 
+
+//---------------------------------------------------------------------------------------------------------------//
+// spotify-this-song function
+else if (search === "spotify-this-song") {
+    console.log("Searching for Songs");
+
+
+    spotify.search({
+        type: 'track',
+        query: search,
+    },
+        function (err, data) {
+            if (err) {
+                return console.log("Error: " + err);
+
+            } else {
+                var results = data.tracks.items
+                for (i = 0; i < results.length; i++) {
+                    var songData = [
+                        "Artist: " + results[i].artists[0].name,
+                        "Song name: " + results[i].name,
+                        "Album: " + results[i].album.name,
+                        "Link to Spotify: " + results[i].external_urls.spotify,
+
+                    ].join("\n\n");
+                    console.log(songData);
+
+                };
+            };
+        });
     };
+//};
+//song();
 
-//for an artist and render the following information about each event to the terminal:
-//"concert-this" function
-// function concert() {
-//     axios.get(bandsAPI).then(
-//         function (response) {
+//////////
+// else if (apiType == "spotify-this-song") {
+//     spotifyAPI.search({ type: "track", 
+//query: searchTerm, 
+//limit: 20 }, 
+//          function (err, data) {
+//         if (err) {
+//             return console.log('Error occurred: ' + err);
+//         }
+//         var resultArray = data.tracks.items;
 
-//             for (var i = 0; i < response.data.length; i++) {
-//                 console.log("Artist: " + response.data[i].lineup[i]);
-//                 console.log("Venue: " + response.data[i].venue.name + ", in " + response.data[i].venue.city + ", " + response.data[i].venue.region);
+//         for (var i = 0; i < resultArray.length; i++) {
+//             var band = resultArray[i].album.artists[0].name;
+//             var song = resultArray[i].name;
+//             var album = resultArray[i].album.name;
+//             var songLink = resultArray[i].external_urls.spotify;
 
-//                 var timeTwo = [];
-//                 var time = response.data[i].datetime
-//                 let timeTest = time.split("T");
+//             var spotifyData = "Song Name: " + song + "\nBand: " + band + "\nAlbum: " + album + "\nSpotify Link: " + songLink;
 
-//                 console.log("Date: " + timeTwo[1]);
-//                 moment(time, "MM-DD-YYYY");
-
-//             }
-//         }).catch(function (error) {
-//         console.log(error)
-//     })
-// };
-
-
+//                 console.log(spotifyData + "\n");
+//               });
+//         }
+//     });
+// } 
+/////////////////////////
 
 //spotify-this-song:node liri.js spotify-this-song '<song name here>
 //This will show the following information about the song in your terminal/bash window:
-//Artist(s)
-//The song's name
-//A preview link of the song from Spotify
-//The album that the song is from
+
 //If no song is provided then your program will default to "The Sign" by Ace of Base.
 //You will utilize the [node-spotify-api](https://www.npmjs.com/package/node-spotify-api) package 
 //in order to retrieve song information from the Spotify API.
-//The Spotify API requires you sign up as a developer to generate the necessary credentials. You can follow these steps in order to generate a **client id** and **client secret**:
-//Step One: Visit <https://developer.spotify.com/my-applications/#!/>
-//Step Two: Either login to your existing Spotify account or create a new one (a free account is fine) and log in.
-//Step Three: Once logged in, navigate to <https://developer.spotify.com/my-applications/#!/applications/create> 
-//to register a new application to be used with the Spotify API. You can fill in whatever you'd like for these fields. 
-//When finished, click the "complete" button.
-//Step Four: On the next screen, scroll down to where you see your client id and client secret. 
-//Copy these values down somewhere, you'll need them to use the Spotify API and the 
-//[node-spotify-api package](https://www.npmjs.com/package/node-spotify-api).
 
+
+//---------------------------------------------------------------------------------------------------------------//
 
 //movie-this:node liri.js movie-this '<movie name here>
 //This will output the following information to your terminal/bash window
@@ -108,6 +130,8 @@ if (search === "concert-this") {
 //It's on Netflix!
 //You'll use the `axios` package to retrieve data from the OMDB API. Like all of the in-class activities, 
 //the OMDB API requires an API key. You may use `trilogy`.
+
+//---------------------------------------------------------------------------------------------------------------//
 
 
 //do-what-it-says:node liri.js do-what-it-says
