@@ -3,6 +3,14 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 
+var fs = require("fs");
+
+//add moment
+const moment = require("moment");
+
+// omdbapi wrapper, npm install omdbapi
+// var omdb = require("omdbapi");
+
 //var spotify = new Spotify(keys.spotify);
 
 var axios = require("axios");
@@ -16,24 +24,50 @@ if (search === "concert-this") {
     console.log("Searching for Concerts");
     axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
         .then(function (response) {
-           // console.log(response)
-            // parse the response body (string) to a JSON object
-            var jsonData = response.data;
+           // console.log(response) - for testing
+            //looping through response.data
+           for (var i = 0; i < response.data.length; i++) {
+
+            // var date = response.data[i].datetime;
+            // var eventDate = moment(date, "MM-DD-YYYY"),
+
             var showData = [
-                "Name of the venue: " + jsonData.name,
-                "Venue location: " + jsonData.location,
-                "Date of the Event: " + jsonData.date,
+                "Artist: " + response.data[i].lineup[i],
+                "Name of the venue: " + response.data[i].venue.name,
+                "Venue location: " + response.data[i].venue.city,
+                "Date of the Event: " + response.data[i].datetime,
+
             ].join("\n\n");
             console.log(showData);
-        })
-}
 
+           }
+        });
+    } else {
+        console.log("error");
+    };
 
 //for an artist and render the following information about each event to the terminal:
-//Name of the venue
-//Venue location
-//Date of the Event (use moment to format this as "MM/DD/YYYY")
+//"concert-this" function
+// function concert() {
+//     axios.get(bandsAPI).then(
+//         function (response) {
 
+//             for (var i = 0; i < response.data.length; i++) {
+//                 console.log("Artist: " + response.data[i].lineup[i]);
+//                 console.log("Venue: " + response.data[i].venue.name + ", in " + response.data[i].venue.city + ", " + response.data[i].venue.region);
+
+//                 var timeTwo = [];
+//                 var time = response.data[i].datetime
+//                 let timeTest = time.split("T");
+
+//                 console.log("Date: " + timeTwo[1]);
+//                 moment(time, "MM-DD-YYYY");
+
+//             }
+//         }).catch(function (error) {
+//         console.log(error)
+//     })
+// };
 
 
 
