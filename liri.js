@@ -10,18 +10,17 @@ const moment = require("moment");
 
 // omdbapi wrapper, npm install omdbapi
 // var omdb = require("omdbapi");
-var Spotify = require("node-spotify-api");
+var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
 var axios = require("axios");
 
 var search = process.argv[2]
-
 var term = process.argv.slice(3).join(" ");
 
 
 if (search === "concert-this") {
-    console.log("Searching for Concerts");
+    console.log("Searching for Concerts...");
     axios.get("https://rest.bandsintown.com/artists/" + term + "/events?app_id=codingbootcamp")
         .then(function (response) {
             // console.log(response) - for testing
@@ -47,33 +46,53 @@ if (search === "concert-this") {
 //---------------------------------------------------------------------------------------------------------------//
 // spotify-this-song function
 else if (search === "spotify-this-song") {
-    console.log("Searching for Songs");
+    console.log("Searching for Songs...");
 
+    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }else {
+                        var results = data.tracks.items
+                        for (i = 0; i < results.length; i++) {
+                            var songData = [
+                                "Artist: " + results[i].artists[0].name,
+                                "Song name: " + results[i].name,
+                                "Album: " + results[i].album.name,
+                                "Link to Spotify: " + results[i].external_urls.spotify,
+        
+                            ].join("\n\n");
+                            console.log(songData);
+        
+                        };
+       
+      //console.log(data); -- for testing
+      };
+    });
+};
+    // spotify.search({
+    //     type: 'track',
+    //     query: search,
+    // },
+    //     function (err, data) {
+    //         if (err) {
+    //             return console.log("Error: " + err);
 
-    spotify.search({
-        type: 'track',
-        query: search,
-    },
-        function (err, data) {
-            if (err) {
-                return console.log("Error: " + err);
+    //         } else {
+    //             var results = data.tracks.items
+    //             for (i = 0; i < results.length; i++) {
+    //                 var songData = [
+    //                     "Artist: " + results[i].artists[0].name,
+    //                     "Song name: " + results[i].name,
+    //                     "Album: " + results[i].album.name,
+    //                     "Link to Spotify: " + results[i].external_urls.spotify,
 
-            } else {
-                var results = data.tracks.items
-                for (i = 0; i < results.length; i++) {
-                    var songData = [
-                        "Artist: " + results[i].artists[0].name,
-                        "Song name: " + results[i].name,
-                        "Album: " + results[i].album.name,
-                        "Link to Spotify: " + results[i].external_urls.spotify,
+    //                 ].join("\n\n");
+    //                 console.log(songData);
 
-                    ].join("\n\n");
-                    console.log(songData);
-
-                };
-            };
-        });
-    };
+    //             };
+    //         };
+    //     });
+   // };
 //};
 //song();
 
