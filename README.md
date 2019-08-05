@@ -13,7 +13,7 @@
 ## Images how-to example
 If you want to embed images, this is how you do it:
 
-![Image of Concert-this](https://octodex.github.com/images/Capture.PNG)
+![Image of Concert-this](https://github.com/jybragg/liri-node-app.git/images/Capture.PNG)
 
 ## List examples:
 
